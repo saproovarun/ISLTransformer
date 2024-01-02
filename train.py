@@ -49,7 +49,7 @@ def validate(model, dataloader):
 def train(model, epochs, train_loader, val_loader):
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
     loss_func = F.CrossEntropyLoss()
-    max_acc = 0
+    max_acc, best_epoch = 0, 0
     train_acc, train_loss = AccuracyTrack(), LossTrack(F.CrossEntropyLoss)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode="min", factor=0.99, patience = 10
@@ -76,17 +76,18 @@ def train(model, epochs, train_loader, val_loader):
         
         if val_acc > max_acc:
             max_acc = val_acc
+            best_epoch = epoch
             torch.save(model.state_dict(), './transformer.pth.tar')
         train_acc.reset()
         train_loss.reset()
-    print(f"Maximum validation accuracy is : {max_acc}")
+    print(f"Maximum validation accuracy is : {max_acc}, epoch : {best_epoch}")
 set_seed(0)
 LEARNING_RATE = 1e-4
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, num_workers=4)
-val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False, num_workers=4)
-test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=4)
+NUM_OF_WORKERS = 16
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, num_workers=NUM_OF_WORKERS)
+val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False, num_workers=NUM_OF_WORKERS)
+test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=NUM_OF_WORKERS)
 
 model = BERT(262)
 model.to(device)

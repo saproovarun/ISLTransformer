@@ -128,15 +128,20 @@ def process_video(file_path, mode):
     del poses_x, poses_y, hands1_x, hands1_y, hands2_x, hands2_y
     gc.collect()
 
-train_paths = read_paths('./train_test_paths/final_include_train.txt')
-val_paths = read_paths('./train_test_paths/final_include_val.txt')
-test_paths = read_paths('./train_test_paths/final_include_test.txt')
+# train_paths = read_paths('./train_test_paths/final_include_train.txt')
+# val_paths = read_paths('./train_test_paths/final_include_val.txt')
+# test_paths = read_paths('./train_test_paths/final_include_test.txt')
+
+train_paths = read_paths('./train_test_paths/include_train.txt')
+val_paths = read_paths('./train_test_paths/include_val.txt')
+test_paths = read_paths('./train_test_paths/include_test.txt')
+
 if not os.path.exists('./keypts/train_include_keypts'):
-    os.mkdir('./keypts/train_include_keypts')
+    os.makedirs('./keypts/train_include_keypts')
 if not os.path.exists('./keypts/val_include_keypts'):
-    os.mkdir('./keypts/val_include_keypts')
+    os.makedirs('./keypts/val_include_keypts')
 if not os.path.exists('./keypts/test_include_keypts'):
-    os.mkdir('./keypts/test_include_keypts')
+    os.makedirs('./keypts/test_include_keypts')
 
 
 Parallel(n_jobs=4, batch_size=2)(
