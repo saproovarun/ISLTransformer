@@ -123,9 +123,6 @@ def cnn_feat(file_path, save_dir):
             for connection in connections:
                 cv2.line(image, tuple(video_record.hand2[frame_index][connection[0]].astype("int")), \
                         tuple(video_record.hand2[frame_index][connection[1]].astype("int")), (0,255,0),1)
-        cv2.imwrite('./temp.jpg', image)
-        print(save_path)
-        quit()
         with torch.no_grad():
             feat = model(transform(image).unsqueeze(0).to(device))
         features = np.vstack([features, feat.cpu().numpy()])
