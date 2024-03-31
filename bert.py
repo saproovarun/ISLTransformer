@@ -4,8 +4,6 @@ import torch.nn.functional as F
 import transformers
 import math
 
-MODE = 'MAX'
-
 MAX_POS_EMBEDDINGS = 150
 D_MODEL = 200
 NUM_HIDDEN_LAYERS = 1
@@ -19,7 +17,7 @@ model_config = transformers.BertConfig(
         )
 
 class PositionEmbedding(nn.Module):
-
+# Reference : https://github.com/codertimo/BERT-pytorch/blob/d10dc4f9d5a6f2ca74380f62039526eb7277c671/bert_pytorch/model/embedding/position.py
     def __init__(self):
         super().__init__()
         self.dropout = nn.Dropout(p=0.1)
@@ -50,10 +48,7 @@ class BERT(nn.Module):
         x = self.l1(x)
         x = self.embedding(x)
         x = self.bert_layer(x)[0]
-        if MODE == 'CLS':
-            x = x[:,0,:]
-        if MODE == 'MAX':
-            x = torch.max(x, dim=1).values
+        x = torch.max(x, dim=1).values
         x = self.l2(x)
         return x
 
