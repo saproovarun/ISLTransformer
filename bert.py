@@ -8,8 +8,8 @@ MAX_POS_EMBEDDINGS = 150
 D_MODEL = 200
 NUM_HIDDEN_LAYERS = 1
 NUM_ATTN_HEADS = 2
-CNN_OUTPUT_DIM = 4096 
-
+CNN_OUTPUT_DIM = 1536 
+# HIDDEN_SIZE = 128
 model_config = transformers.BertConfig(
             hidden_size=D_MODEL,
             num_attention_heads=NUM_ATTN_HEADS,
